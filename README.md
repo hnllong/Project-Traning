@@ -16,20 +16,16 @@ install dev dependencies
 
 ### `npm install` or `yarn install`
 
-## Then
-
-Run The app
-
-### `npm start` or `yarn start`
+## Get API KEY
+Go to https://openai.com , create a new account and get your api key, add the api key in constants/index.js file
 
 ## Build Pod File
 
 ### `cd ios` and `pod install`
 
-## Get API KEY
-Go to https://openai.com , create a new account and get your api key, add the api key in constants/index.js file
 
 
+## Run The App
 #### `npm run ios` or `yarn run ios`
 
 Like `npm start` / `yarn start`, but also attempts to open your app in the iOS Simulator if you're on a Mac and have it installed.
