@@ -17,7 +17,9 @@ install dev dependencies
 ### `npm install` or `yarn install`
 
 ## Get API KEY
-Go to https://openai.com , create a new account and get your api key, add the api key in constants/index.js file
+1. Go to https://openai.com<br/>
+2. Create a new account and get your api key<br/>
+3. Add the api key in constants/index.js file
 
 ## Build Pod File
 
