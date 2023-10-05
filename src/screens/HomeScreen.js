@@ -148,6 +148,7 @@ const App = () => {
 
 
   return (
+    <ScrollView contentContainerStyle={{paddingBottom:300}}>
     <View className="flex-1 bg-white">
       {/* <StatusBar barStyle="dark-content" /> */}
       <SafeAreaView className="flex-1 flex mx-5">
@@ -290,6 +291,7 @@ const App = () => {
         
       </SafeAreaView>
     </View>
+    </ScrollView>
   );
 };
 
