@@ -1,19 +1,10 @@
-import React from 'react'
-import AppNavigation from './src/navigation';
-import {
-  Alert,
-  Text,
-  Animated,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import { CurvedBottomBar } from 'react-native-curved-bottom-bar';
+import React from 'react';
+import {Animated, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {CurvedBottomBar} from 'react-native-curved-bottom-bar';
+import TabChat from './src/navigation/TabChat';
 // import Ionicons from 'react-native-vector-icons/Ionicons';
-import { NavigationContainer } from '@react-navigation/native';
-import WelcomeScreen from './src/screens/WelcomeScreen';
-
-
+import {NavigationContainer} from '@react-navigation/native';
+import TabMovies from './src/navigation/TabMovies';
 
 const Screen1 = () => {
   return <View style={styles.screen1} />;
@@ -24,83 +15,82 @@ const Screen2 = () => {
 };
 
 export default function App() {
-  
   // return (
   //   // <AppNavigation />
   // )
-
 
   const _renderIcon = (routeName, selectedTab) => {
     let icon = '';
 
     switch (routeName) {
       case 'title1':
-        icon = 'A';
+        icon = 'Movies';
         break;
       case 'title2':
-        icon = 'B';
+        icon = 'Weather';
         break;
     }
 
-    return (
-      <Text>{icon}</Text>
-    );
+    return <Text>{icon}</Text>;
   };
-  
-  const renderTabBar = ({ routeName, selectedTab, navigate }) => {
+
+  const renderTabBar = ({routeName, selectedTab, navigate}) => {
     return (
       <TouchableOpacity
         onPress={() => navigate(routeName)}
-        style={styles.tabbarItem}
-      >
+        style={styles.tabbarItem}>
         {_renderIcon(routeName, selectedTab)}
       </TouchableOpacity>
     );
   };
   return (
-      <NavigationContainer>
-        <CurvedBottomBar.Navigator
-          type="UP"
-          style={styles.bottomBar}
-          shadowStyle={styles.shawdow}
-          height={55}
-          circleWidth={50}
-          bgColor="white"
-          initialRouteName="title1"
-          borderTopLeftRight
-          screenOptions={{headerShown: false}}
-          renderCircle={({ selectedTab, navigate }) => (
-            <Animated.View style={styles.btnCircleUp}>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => navigate('Movie-App')}
-              >
-                {/* <Ionicons name={'apps-sharp'} color="gray" size={25} /> */}
-                <Text>Helo</Text>
-              </TouchableOpacity>
-            </Animated.View>
-          )}
-          tabBar={renderTabBar}
-        >
-          <CurvedBottomBar.Screen
-            name="title1"
-            position="LEFT"
-            component={() => <Screen1 />}
-          />
-          <CurvedBottomBar.Screen
-            name="title2"
-            component={() => <Screen2 />}
-            position="RIGHT"
-          />
-           <CurvedBottomBar.Screen
-            name="Movie-App"
-            component={() => <AppNavigation  />}
-            position="CIRCLE"
-          
-          />
-          
-        </CurvedBottomBar.Navigator>
-      </NavigationContainer>
+    <NavigationContainer>
+      <CurvedBottomBar.Navigator
+        type="UP"
+        style={styles.bottomBar}
+        shadowStyle={styles.shawdow}
+        height={55}
+        circleWidth={50}
+        bgColor="#F08437"
+        initialRouteName="title1"
+        borderTopLeftRight
+        screenOptions={{headerShown: false}}
+        renderCircle={({selectedTab, navigate}) => (
+          <Animated.View style={styles.btnCircleUp}>
+            {console.log('selectedTab', selectedTab)}
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigate('Movie-App')}>
+              {/* <Ionicons name={'apps-sharp'} color="gray" size={25} /> */}
+              <Text
+                style={{
+                  color: '#F08437',
+                  fontSize: selectedTab === 'Movie-App' ? 20 : 15,
+                  fontWeight: selectedTab === 'Movie-App' ? 'bold' : 500,
+                }}>
+                Bot
+              </Text>
+            </TouchableOpacity>
+          </Animated.View>
+        )}
+        tabBar={renderTabBar}>
+        <CurvedBottomBar.Screen
+          name="title1"
+          position="LEFT"
+          component={() => <TabMovies />}
+        />
+        <CurvedBottomBar.Screen
+          name="title2"
+          component={() => <Screen2 />}
+          position="RIGHT"
+        />
+        <CurvedBottomBar.Screen
+          name="Movie-App"
+          component={() => <TabChat />}
+          position="CIRCLE"
+        />
+      </CurvedBottomBar.Navigator>
+    </NavigationContainer>
   );
 }
 export const styles = StyleSheet.create({
@@ -128,7 +118,7 @@ export const styles = StyleSheet.create({
     borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#E8E8E8',
+    backgroundColor: '#fff',
     bottom: 18,
     shadowColor: '#000',
     shadowOffset: {
