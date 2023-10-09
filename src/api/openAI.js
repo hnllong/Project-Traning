@@ -1,8 +1,8 @@
-import { apiKey } from "../constants";
+import { apiKeyChatBot } from "../constants";
 import axios from 'axios';
 const client = axios.create({
     headers: {
-        "Authorization": "Bearer "+apiKey,
+        "Authorization": "Bearer "+apiKeyChatBot,
         "Content-Type": "application/json"
     }
 })

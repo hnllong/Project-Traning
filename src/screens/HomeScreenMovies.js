@@ -1,21 +1,21 @@
-import {View, Text, TouchableOpacity, ScrollView, Platform} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import React, { useEffect, useState } from 'react';
+import { Platform, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import {
   Bars3CenterLeftIcon,
   MagnifyingGlassIcon,
 } from 'react-native-heroicons/outline';
-import TrendingMovies from '../components/trendingMovies';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import MovieList from '../components/movieList';
+import TrendingMovies from '../components/trendingMovies';
 // import {StatusBar} from 'expo-status-bar';
+import { useNavigation } from '@react-navigation/native';
 import {
   fetchTopRatedMovies,
   fetchTrendingMovies,
   fetchUpcomingMovies,
 } from '../api/moviedb';
-import {useNavigation} from '@react-navigation/native';
 import Loading from '../components/loading';
-import {styles} from '../theme';
+import { styles } from '../theme';
 
 const ios = Platform.OS === 'ios';
 
@@ -50,7 +50,7 @@ export default function HomeScreenMovies() {
   };
 
   return (
-    <View className="flex-1 bg-neutral-800">
+    <View className="flex-1 bg-neutral-800 pt-5">
       {/* search bar */}
       <SafeAreaView className={ios ? '-mb-2' : 'mb-3'}>
         {/* <StatusBar style="light" /> */}

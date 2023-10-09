@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "438676476367",
+    "project_id": "fir-chat-6f2f3",
+    "storage_bucket": "fir-chat-6f2f3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:438676476367:android:658abac7592f2f9e1882ba",
+        "android_client_info": {
+          "package_name": "com.reactnativeai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFHvKG_9ckUmghmLGZgoxbqVd7Vvduabc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
