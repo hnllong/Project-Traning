@@ -1,0 +1,37 @@
+export default chatFaceData=[
+    {
+        id:1,
+        name:'Noyi',
+        image:'https://res.cloudinary.com/dknvsbuyy/image/upload/v1685678135/chat_1_c7eda483e3.png',
+        primary:'#FFC107',
+        secondary:''
+    },
+    {
+        id:2,
+        name:'Pogu',
+        image:'https://res.cloudinary.com/dknvsbuyy/image/upload/v1685709886/image_21_2e18bb4a61.png',
+        primary:'#E53057',
+        secondary:''
+    },
+    {
+        id:3,
+        name:'Nista',
+        image:'https://farm5.staticflickr.com/4876/39891228293_13c532f352_o.gif',
+        primary:'#3B96D2',
+        secondary:''
+    },
+    {
+        id:4,
+        name:'Estor',
+        image:'https://farm8.staticflickr.com/7881/31914878607_25f295492a_o.gif',
+        primary:'#37474F',
+        secondary:''
+    },
+    {
+        id:5,
+        name:'Pega',
+        image:'https://media.tenor.com/s1Y9XfdN08EAAAAi/bot.gif',
+        primary:'#2473FE',
+        secondary:''
+    },
+]

@@ -1,4 +1,4 @@
-// export const apiKey = 'place your openAI api key here';
+export const apiKeyChatBot = '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';
 // in some cases your api key maybe already expired
 // try to use a new account to create an api key
 export const apiKey = '595cb3e8f1c1fd4a906b921f0dc66013';
