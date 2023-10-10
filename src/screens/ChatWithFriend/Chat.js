@@ -1,10 +1,8 @@
-import {View, Text} from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
-import {GiftedChat} from 'react-native-gifted-chat';
-import {useRoute} from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
-import uuid from 'react-native-uuid';
+import {useRoute} from '@react-navigation/native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {View} from 'react-native';
+import {GiftedChat} from 'react-native-gifted-chat';
 
 const Chat = () => {
   const [messageList, setMessageList] = useState([]);
@@ -21,7 +19,10 @@ const Chat = () => {
       });
       setMessageList(allmessages);
     });
-    return () => subscriber();
+    // return () => subscriber();
+    return () => {
+      return subscriber;
+    };
   }, []);
 
   const onSend = useCallback(async (messages = []) => {
@@ -48,14 +49,18 @@ const Chat = () => {
   }, []);
 
   return (
-    <View style={{flex: 1, paddingBottom:200}}>
-      <GiftedChat
-        messages={messageList}
-        onSend={messages => onSend(messages)}
-        user={{
-          _id: route.params.id,
-        }}
-      />
+    <View style={{flex: 1, justifyContent: 'space-around'}}>
+      <View style={{flex: 1}}></View>
+      <View style={{flex: 6, backgroundColor: 'pink'}}>
+        <GiftedChat
+          messages={messageList}
+          onSend={messages => onSend(messages)}
+          user={{
+            _id: route.params.id,
+          }}
+        />
+      </View>
+      <View style={{flex: 1}}></View>
     </View>
   );
 };

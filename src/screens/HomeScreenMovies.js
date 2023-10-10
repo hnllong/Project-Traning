@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { Platform, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Platform, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {
   Bars3CenterLeftIcon,
   MagnifyingGlassIcon,
 } from 'react-native-heroicons/outline';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import MovieList from '../components/movieList';
 import TrendingMovies from '../components/trendingMovies';
 // import {StatusBar} from 'expo-status-bar';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {
   fetchTopRatedMovies,
   fetchTrendingMovies,
   fetchUpcomingMovies,
 } from '../api/moviedb';
 import Loading from '../components/loading';
-import { styles } from '../theme';
+import {styles} from '../theme';
 
 const ios = Platform.OS === 'ios';
 
@@ -25,7 +25,7 @@ export default function HomeScreenMovies() {
   const [topRated, setTopRated] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
-  console.log('trending', trending);
+
   useEffect(() => {
     getTrendingMovies();
     getUpcomingMovies();
@@ -34,18 +34,15 @@ export default function HomeScreenMovies() {
 
   const getTrendingMovies = async () => {
     const data = await fetchTrendingMovies();
-    console.log('got trending', data.results.length);
     if (data && data.results) setTrending(data.results);
     setLoading(false);
   };
   const getUpcomingMovies = async () => {
     const data = await fetchUpcomingMovies();
-    console.log('got upcoming', data.results.length);
     if (data && data.results) setUpcoming(data.results);
   };
   const getTopRatedMovies = async () => {
     const data = await fetchTopRatedMovies();
-    console.log('got top rated', data.results.length);
     if (data && data.results) setTopRated(data.results);
   };
 

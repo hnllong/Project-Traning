@@ -1,25 +1,18 @@
-import {View, Text, Image, ScrollView} from 'react-native';
-import React from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Image, Text, View} from 'react-native';
 import {Bubble, GiftedChat, InputToolbar, Send} from 'react-native-gifted-chat';
-import {useState, useRef, useEffect, useCallback} from 'react';
-import {getBardApi} from '../service/chatbotApi';
 // import { FontAwesome } from '@expo/vector-icons';
-import ChatFaceData from '../service/ChatFaceData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import ChatFaceData from '../service/ChatFaceData';
 
-CHAT_BOT_FACE =
+let CHAT_BOT_FACE =
   'https://res.cloudinary.com/dknvsbuyy/image/upload/v1685678135/chat_1_c7eda483e3.png';
-export default function ChatScreen() {
+export default function ChatBotScreen() {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [chatFaceColor, setChatFaceColor] = useState();
   const [idBot, setIdBot] = useState();
-  const scrollViewRef = useRef();
 
   useEffect(() => {
     checkFaceId();
@@ -48,7 +41,6 @@ export default function ChatScreen() {
     setMessages(previousMessages =>
       GiftedChat.append(previousMessages, messages),
     );
-    console.log('messages[0].text', messages[0].text);
     if (messages[0].text) {
       getBardResp(messages[0].text);
     }
@@ -56,14 +48,9 @@ export default function ChatScreen() {
 
   const getBardResp = async msg => {
     setLoading(true);
-    console.log('msg', msg);
-    // console.log('hi')
-
     await axios.get(`http://192.168.1.4:3000/api/bardapi?ques=${msg}`)?.then(
       resp => {
-        console.log('3');
         if (resp.data.resp[1].content) {
-          console.log('resp.data.resp[1].content', resp.data.resp[1].content);
           setLoading(false);
           const chatAIResp = {
             _id: Math.random() * (9999999 - 1),
@@ -96,7 +83,7 @@ export default function ChatScreen() {
         }
       },
       error => {
-        console.log('vao');
+        console.log('error', error);
       },
     );
   };
@@ -132,9 +119,11 @@ export default function ChatScreen() {
       <InputToolbar
         {...props}
         containerStyle={{
-          padding: 3,
-
-          backgroundColor: '#671ddf',
+          backgroundColor: chatFaceColor,
+          borderRadius: 10,
+          borderWidth: 1,
+          borderColor: chatFaceColor,
+          // marginTop: 60,
           color: '#fff',
         }}
         textInputStyle={{color: '#fff'}}
@@ -152,18 +141,32 @@ export default function ChatScreen() {
       </Send>
     );
   };
+
   return (
-    <View style={{flex: 1, backgroundColor: '#fff', paddingBottom:20}}>
+    <View style={{flex: 1, backgroundColor: 'green', paddingBottom: 80}}>
       <View className=" flex-1">
         <View style={{alignItem: 'center'}}>
           <Image
             source={{uri: ChatFaceData[idBot]?.image}}
-            style={{height: 150, width: 150, marginTop: 20, alignSelf: 'center'}}
+            style={{
+              height: 100,
+              width: 100,
+              marginTop: 10,
+              alignSelf: 'center',
+            }}
           />
-          <Text style={{marginTop: 10, fontSize: 25, textAlign:"center"}}>How Can I help you?</Text>
+          <Text
+            style={{
+              fontSize: 20,
+              textAlign: 'center',
+              fontWeight: 'bold',
+              color: chatFaceColor,
+            }}>
+            How Can I help you?
+          </Text>
         </View>
         <View
-          style={{flexGrow:1, marginLeft:10, marginRight:10}}
+          style={{flexGrow: 1, marginLeft: 10, marginRight: 10}}
           className="bg-neutral-200 rounded-3xl p-4">
           <GiftedChat
             messages={messages}
@@ -174,7 +177,7 @@ export default function ChatScreen() {
               _id: 1,
             }}
             renderBubble={renderBubble}
-            // renderInputToolbar={renderInputToolbar}
+            renderInputToolbar={renderInputToolbar}
             renderSend={renderSend}
           />
         </View>
