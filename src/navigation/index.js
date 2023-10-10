@@ -1,16 +1,11 @@
-import React, { useEffect, useRef ,useState} from 'react';
-import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { CurvedBottomBar } from 'react-native-curved-bottom-bar';
-// import TabChat from './src/navigation/TabChat';
-// import Ionicons from 'react-native-vector-icons/Ionicons';
-import { NavigationContainer } from '@react-navigation/native';
-
-// import ChatScreen from './src/screens/ChatBot';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React, {useEffect, useRef, useState} from 'react';
+import {Animated, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {CurvedBottomBar} from 'react-native-curved-bottom-bar';
 import TabChat from './TabChat';
 import TabMovies from './TabMovies';
-import ChatWithFriend from './TabChatWithFriend';
-// import Test from './Test';
+import WeatherScreen from '../screens/WeatherScreen';
 
 const Screen1 = () => {
   return <View style={styles.screen1} />;
@@ -21,20 +16,20 @@ const Screen2 = () => {
 };
 
 export default function NavigatorOne() {
-    const [routeName,setRouteName]= useState()
-    console.log('routeName',routeName)
+  const [routeName, setRouteName] = useState();
+  console.log('routeName', routeName);
   // return (
   //   // <AppNavigation />
   // )
   useEffect(() => {
     return () => {
-        tabBarRef?.current?.setVisible(true)
+      tabBarRef.current.setVisible(true);
     };
-  }, [])
+  }, []);
 
   const Stack = createNativeStackNavigator();
-   const tabBarRef = useRef();
-   const navigationRef = useRef();
+  const tabBarRef = useRef();
+  const navigationRef = useRef();
   const _renderIcon = (routeName, selectedTab) => {
     let icon = '';
 
@@ -51,7 +46,6 @@ export default function NavigatorOne() {
   };
 
   const renderTabBar = ({routeName, selectedTab, navigate}) => {
- 
     return (
       <TouchableOpacity
         onPress={() => navigate(routeName)}
@@ -61,24 +55,15 @@ export default function NavigatorOne() {
     );
   };
 
-  const test= (name)=>{
-    if(['Movie-App']?.includes(name)){
-        console.log('vao')
-        tabBarRef?.current?.setVisible(false)
-    }else{
-        tabBarRef?.current?.setVisible(true)
-    }
-  }
   return (
-    <NavigationContainer 
-    ref={navigationRef}
-    onReady={() => {
+    <NavigationContainer
+      ref={navigationRef}
+      onReady={() => {
         const currentRoute = navigationRef.current.getCurrentRoute();
-        console.log('currentRoute',currentRoute)
+        console.log('currentRoute', currentRoute);
         setRouteName(currentRoute.name);
         // Do whatever you want with navigation here!.
-      }}
-      >
+      }}>
       <CurvedBottomBar.Navigator
         ref={tabBarRef}
         type="UP"
@@ -92,7 +77,6 @@ export default function NavigatorOne() {
         screenOptions={{headerShown: false}}
         renderCircle={({selectedTab, navigate}) => (
           <Animated.View style={styles.btnCircleUp}>
-            {test(selectedTab)}
             <TouchableOpacity
               style={styles.button}
               onPress={() => navigate('Movie-App')}>
@@ -116,19 +100,16 @@ export default function NavigatorOne() {
         />
         <CurvedBottomBar.Screen
           name="title2"
-          component={() => <ChatWithFriend />}
+          component={() => <WeatherScreen />}
           position="RIGHT"
         />
         <CurvedBottomBar.Screen
           name="Movie-App"
           component={() => <TabChat />}
           position="CIRCLE"
-          
         />
       </CurvedBottomBar.Navigator>
-      
-      </NavigationContainer>
-    
+    </NavigationContainer>
   );
 }
 export const styles = StyleSheet.create({

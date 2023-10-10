@@ -1,4 +1,5 @@
-export const apiKeyChatBot = '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';
+export const apiKeyChatBot =
+  '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';
 // in some cases your api key maybe already expired
 // try to use a new account to create an api key
 export const apiKey = '595cb3e8f1c1fd4a906b921f0dc66013';
@@ -48,3 +49,25 @@ export const dummyMessages = [
       'https://storage.googleapis.com/pai-images/ae74b3002bfe4b538493ca7aedb6a300.jpeg',
   },
 ];
+
+export const apiKeyWeather =
+  'place your api key here from : https://www.weatherapi.com';
+
+export const weatherImages = {
+  'Partly cloudy': require('../../assets/images/imag1.png'),
+  'Moderate rain': require('../../assets/images/moderaterain.png'),
+  'Patchy rain possible': require('../../assets/images/moderaterain.png'),
+  Sunny: require('../../assets/images/sun.png'),
+  Clear: require('../../assets/images/sun.png'),
+  Overcast: require('../../assets/images/cloud.png'),
+  Cloudy: require('../../assets/images/cloud.png'),
+  'Light rain': require('../../assets/images/moderaterain.png'),
+  'Moderate rain at times': require('../../assets/images/moderaterain.png'),
+  'Heavy rain': require('../../assets/images/heavyrain.png'),
+  'Heavy rain at times': require('../../assets/images/heavyrain.png'),
+  'Moderate or heavy freezing rain': require('../../assets/images/heavyrain.png'),
+  'Moderate or heavy rain shower': require('../../assets/images/heavyrain.png'),
+  'Moderate or heavy rain with thunder': require('../../assets/images/heavyrain.png'),
+  Mist: require('../../assets/images/mist.png'),
+  other: require('../../assets/images/moderaterain.png'),
+};
