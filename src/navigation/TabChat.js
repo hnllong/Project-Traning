@@ -10,6 +10,7 @@ import Chat from '../screens/ChatWithFriend/Chat';
 import Main from '../screens/ChatWithFriend/Main';
 import IntroChat from '../screens/IntroChat';
 import WelcomeChatBotScreen from '../screens/WelcomeChatBotScreen';
+import VideoCall from '../screens/ChatWithFriend/VideoCall';
 
 ChatScreen;
 const Stack = createNativeStackNavigator();
@@ -23,7 +24,11 @@ function TabChat() {
       {/* <Stack.Screen name="ChatWithBot" component={ChatWithBot} />
       <Stack.Screen name="ChatWithfriend" component={ChatWithFriend} /> */}
       <Stack.Screen name="IntroBot" component={WelcomeChatBotScreen} />
-      <Stack.Screen name="ChatBot" component={ChatBotScreen} />
+      <Stack.Screen
+        name="ChatBot"
+        component={ChatBotScreen}
+        screenOptions={{headerShown: false}}
+      />
       <Stack.Screen
         name={'Signup'}
         component={Signup}
@@ -42,7 +47,12 @@ function TabChat() {
       <Stack.Screen
         name={'Chat'}
         component={Chat}
-        options={{headerShown: true}}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name={'VideoCall'}
+        component={VideoCall}
+        options={{headerShown: false}}
       />
     </Stack.Navigator>
   );

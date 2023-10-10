@@ -1,20 +1,32 @@
-import React, {useRef, useState, useEffect} from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {PermissionsAndroid, Platform} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import React, {useEffect, useRef, useState} from 'react';
 import {
+  Image,
+  PermissionsAndroid,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {
+  ChannelProfileType,
   ClientRoleType,
-  createAgoraRtcEngine,
   IRtcEngine,
   RtcSurfaceView,
-  ChannelProfileType,
+  createAgoraRtcEngine,
 } from 'react-native-agora';
 
-const appId = '<--Insert app ID here-->';
-const channelName = '<--Insert channel name here-->';
-const token = '<--Insert authentication token here-->';
+const appId = '7a7cc00cee23443dbf0ed8185bee91ad';
+const channelName = 'Test Video Call';
+const token =
+  '007eJxTYEhmW2zYerj/2KSggqMsUZKnBeMbd08RY7nuKXfRQm7WlFoFBvNE8+RkA4Pk1FQjYxMT45SkNIPUFAtDC9Ok1FRLw8SU0wKqqQ2BjAzyudasjAyMDCxADOIzgUlmMMkCJvkZQlKLSxTCMlNS8xWcE3NyGBgANgAjFQ==';
 const uid = 0;
 
 const VideoCall = () => {
+  const navigation = useNavigation();
   const agoraEngineRef = useRef<IRtcEngine>(); // Agora engine instance
   const [isJoined, setIsJoined] = useState(false); // Indicates if the local user has joined the channel
   const [remoteUid, setRemoteUid] = useState(0); // Uid of the remote user
@@ -24,6 +36,16 @@ const VideoCall = () => {
     // Initialize Agora engine when the app starts
     setupVideoSDKEngine();
   });
+
+  useEffect(() => {
+    setTimeout(() => {
+      return join();
+    }, 500);
+
+    return () => {
+      leave();
+    };
+  }, []);
 
   const setupVideoSDKEngine = async () => {
     try {
@@ -58,6 +80,7 @@ const VideoCall = () => {
   };
 
   const join = async () => {
+    console.log('vao');
     if (isJoined) {
       return;
     }
@@ -75,6 +98,7 @@ const VideoCall = () => {
   };
 
   const leave = () => {
+    console.log('leave');
     try {
       agoraEngineRef.current?.leaveChannel();
       setRemoteUid(0);
@@ -96,6 +120,11 @@ const VideoCall = () => {
         PermissionsAndroid.PERMISSIONS.CAMERA,
       ]);
     }
+  };
+
+  const handleOut = () => {
+    leave();
+    navigation.navigate('Chat');
   };
 
   return (
@@ -133,6 +162,13 @@ const VideoCall = () => {
         )}
         <Text style={styles.info}>{message}</Text>
       </ScrollView>
+      <TouchableOpacity style={styles.viewFooter} onPress={handleOut}>
+        <Image
+          source={require('../../../src/assets/ic_decline.png')}
+          style={styles.styleImage}
+          resizeMode="contain"
+        />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -153,5 +189,15 @@ const styles = StyleSheet.create({
   btnContainer: {flexDirection: 'row', justifyContent: 'center'},
   head: {fontSize: 20},
   info: {backgroundColor: '#ffffe0', color: '#0000ff'},
+  styleImage: {
+    width: '100%',
+    height: '100%',
+  },
+  viewFooter: {
+    position: 'absolute',
+    bottom: 70,
+    width: 100,
+    height: 100,
+  },
 });
 export default VideoCall;
