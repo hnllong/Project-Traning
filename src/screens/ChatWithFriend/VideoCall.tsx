@@ -129,21 +129,12 @@ const VideoCall = () => {
 
   return (
     <SafeAreaView style={styles.main}>
-      <Text style={styles.head}>Agora Video Calling Quickstart</Text>
-      <View style={styles.btnContainer}>
-        <Text onPress={join} style={styles.button}>
-          Join
-        </Text>
-        <Text onPress={leave} style={styles.button}>
-          Leave
-        </Text>
-      </View>
       <ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.scrollContainer}>
         {isJoined ? (
           <React.Fragment key={0}>
-            <RtcSurfaceView canvas={{uid: 0}} style={styles.videoView} />
+            <RtcSurfaceView canvas={{uid: 0}} style={[styles.videoView]} />
             <Text>Local user uid: {uid}</Text>
           </React.Fragment>
         ) : (
@@ -153,7 +144,7 @@ const VideoCall = () => {
           <React.Fragment key={remoteUid}>
             <RtcSurfaceView
               canvas={{uid: remoteUid}}
-              style={styles.videoView}
+              style={[styles.videoViewFromOther]}
             />
             <Text>Remote user uid: {remoteUid}</Text>
           </React.Fragment>
@@ -185,7 +176,7 @@ const styles = StyleSheet.create({
   main: {flex: 1, alignItems: 'center'},
   scroll: {flex: 1, backgroundColor: '#ddeeff', width: '100%'},
   scrollContainer: {alignItems: 'center'},
-  videoView: {width: '90%', height: 200},
+  videoView: {width: '100%',flex:1, flexGrow:1, height:1000},
   btnContainer: {flexDirection: 'row', justifyContent: 'center'},
   head: {fontSize: 20},
   info: {backgroundColor: '#ffffe0', color: '#0000ff'},
@@ -199,5 +190,13 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
   },
+  videoViewFromOther:{
+    height:200,
+    width:'35%',
+    top:20,
+    right:20,
+    position:'absolute'
+  }
+
 });
 export default VideoCall;
