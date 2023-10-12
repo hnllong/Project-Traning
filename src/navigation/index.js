@@ -40,37 +40,27 @@ export default function NavigatorOne() {
   const _renderIcon = (routeName, selectedTab) => {
     console.log('selectedTab', selectedTab);
     let icon = '';
-
+    let customStyle = {};
     switch (routeName) {
       case 'title1':
         icon = require('../../assets/images/ic_movie.png');
+        customStyle = {
+          height: selectedTab === 'title1' ? 50 : 40,
+          width: selectedTab === 'title1' ? 50 : 40,
+          tintColor: '#ffffffff',
+        };
         break;
       case 'title2':
         icon = require('../../assets/images/ic_weather.png');
+        customStyle = {
+          height: selectedTab === 'title2' ? 60 : 40,
+          width: selectedTab === 'title2' ? 60 : 40,
+          tintColor: '#ffffffff',
+        };
         break;
     }
 
-    return (
-      <Image
-        source={icon}
-        style={{
-          height:
-            selectedTab === 'title1'
-              ? 60
-              : 40 || selectedTab === 'title2'
-              ? 60
-              : 40,
-          width:
-            selectedTab === 'title1'
-              ? 60
-              : 40 || selectedTab === 'title2'
-              ? 60
-              : 40,
-          tintColor: '#fff',
-        }}
-        resizeMode="contain"
-      />
-    );
+    return <Image source={icon} style={customStyle} resizeMode="contain" />;
   };
 
   const renderTabBar = ({routeName, selectedTab, navigate}) => {
