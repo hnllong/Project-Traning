@@ -1,36 +1,28 @@
-import {
-  View,
-  Text,
-  Image,
-  SafeAreaView,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
-import React ,{useState} from 'react';
-// import {StatusBar} from 'expo-status-bar';
+import React, {useContext, useState} from 'react';
+import {Image, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import Animated, {FadeIn, FadeInDown, FadeInUp} from 'react-native-reanimated';
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import Animated, {FadeInDown, FadeInUp} from 'react-native-reanimated';
+import {MyContext} from '../../context/MyContext';
 
 export default function LoginScreen() {
-  const [email,setEmail]= useState('')
-  const [pass,setPass]= useState('')
+  const {setToken} = useContext(MyContext);
+  const [email, setEmail] = useState('');
+  const [pass, setPass] = useState('');
   const navigation = useNavigation();
-console.log({email,pass})
-const handleLogin = async()=>{
-  try{
-    const resLogin = await axios.post(`http://192.168.1.4:8080/auth/login`,{
-      email,
-      password:pass,
-    })
-    await AsyncStorage.setItem('token',resLogin?.data?.authentication?.sessionToken);
-   
-  }
-  catch(error){
-   console.log('err', error)
-  }
-}
+  console.log({email, pass});
+  const handleLogin = async () => {
+    try {
+      // const resLogin = await axios.post(`http://192.168.1.4:8080/auth/login`, {
+      //   email,
+      //   password: pass,
+      // });
+      // if (!resLogin?.data?.authentication?.sessionToken) return;
+      setToken('Token');
+    } catch (error) {
+      console.log('err', error);
+    }
+  };
 
   return (
     <View className="bg-white h-full w-full">
@@ -62,20 +54,22 @@ const handleLogin = async()=>{
         <View className="flex items-center mx-5 space-y-4 mt-60">
           <Animated.View
             entering={FadeInDown.duration(1000).springify()}
-            className="bg-black/5 p-5 rounded-2xl w-full ">
-            <TextInput placeholder="Email" placeholderTextColor={'gray'} 
-                onChangeText={(txt)=> setEmail(txt)}
-                value={email}
-                />
+            className="bg-black/5 p-3 rounded-2xl w-full ">
+            <TextInput
+              placeholder="Email"
+              placeholderTextColor={'gray'}
+              onChangeText={txt => setEmail(txt)}
+              value={email}
+            />
           </Animated.View>
           <Animated.View
             entering={FadeInDown.delay(200).duration(1000).springify()}
-            className="bg-black/5 p-5 rounded-2xl w-full mb-3">
+            className="bg-black/5 p-3 rounded-2xl w-full mb-3">
             <TextInput
               placeholder="Password"
               placeholderTextColor={'gray'}
               secureTextEntry
-              onChangeText={(txt)=> setPass(txt)}
+              onChangeText={txt => setPass(txt)}
               value={pass}
             />
           </Animated.View>
@@ -83,7 +77,9 @@ const handleLogin = async()=>{
           <Animated.View
             className="w-full"
             entering={FadeInDown.delay(400).duration(1000).springify()}>
-            <TouchableOpacity className="w-full bg-sky-400 p-3 rounded-2xl mb-3" onPress={handleLogin}>
+            <TouchableOpacity
+              className="w-full bg-sky-400 p-3 rounded-2xl mb-3"
+              onPress={handleLogin}>
               <Text className="text-xl font-bold text-white text-center">
                 Login
               </Text>

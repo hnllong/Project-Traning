@@ -88,3 +88,6 @@ export const fetchPersonMovies = personId => {
 export const searchMovies = params => {
   return apiCall(searchMoviesEndpoint, params);
 };
+
+export const apiGetMovieSport = () =>
+  axios.get(`http://192.168.1.4:8080/all-sport/movies`);

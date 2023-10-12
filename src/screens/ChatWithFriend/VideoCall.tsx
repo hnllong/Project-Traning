@@ -9,7 +9,6 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
 } from 'react-native';
 import {
   ChannelProfileType,
@@ -27,6 +26,7 @@ const uid = 0;
 
 const VideoCall = () => {
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(true);
   const agoraEngineRef = useRef<IRtcEngine>(); // Agora engine instance
   const [isJoined, setIsJoined] = useState(false); // Indicates if the local user has joined the channel
   const [remoteUid, setRemoteUid] = useState(0); // Uid of the remote user
@@ -37,10 +37,15 @@ const VideoCall = () => {
     setupVideoSDKEngine();
   });
 
+  const handleInit = () => {
+    setLoading(false);
+    join();
+  };
+
   useEffect(() => {
     setTimeout(() => {
-      return join();
-    }, 500);
+      return handleInit();
+    }, 1000);
 
     return () => {
       leave();
@@ -129,30 +134,38 @@ const VideoCall = () => {
 
   return (
     <SafeAreaView style={styles.main}>
-      <ScrollView
-        style={styles.scroll}
-        contentContainerStyle={styles.scrollContainer}>
-        {isJoined ? (
-          <React.Fragment key={0}>
-            <RtcSurfaceView canvas={{uid: 0}} style={[styles.videoView]} />
-            <Text>Local user uid: {uid}</Text>
-          </React.Fragment>
-        ) : (
-          <Text>Join a channel</Text>
-        )}
-        {isJoined && remoteUid !== 0 ? (
-          <React.Fragment key={remoteUid}>
-            <RtcSurfaceView
-              canvas={{uid: remoteUid}}
-              style={[styles.videoViewFromOther]}
-            />
-            <Text>Remote user uid: {remoteUid}</Text>
-          </React.Fragment>
-        ) : (
-          <Text>Waiting for a remote user to join</Text>
-        )}
-        <Text style={styles.info}>{message}</Text>
-      </ScrollView>
+      {loading ? (
+        <Image
+          source={require('../../../assets/images/loading.gif')}
+          style={{height: 300, width: 300}}
+          resizeMode="cover"
+        />
+      ) : (
+        <ScrollView
+          style={styles.scroll}
+          contentContainerStyle={styles.scrollContainer}>
+          {isJoined ? (
+            <React.Fragment key={0}>
+              <RtcSurfaceView canvas={{uid: 0}} style={[styles.videoView]} />
+              <Text>Local user uid: {uid}</Text>
+            </React.Fragment>
+          ) : (
+            <Text>Join a channel</Text>
+          )}
+          {isJoined && remoteUid !== 0 ? (
+            <React.Fragment key={remoteUid}>
+              <RtcSurfaceView
+                canvas={{uid: remoteUid}}
+                style={[styles.videoViewFromOther]}
+              />
+              <Text>Remote user uid: {remoteUid}</Text>
+            </React.Fragment>
+          ) : (
+            <Text>Waiting for a remote user to join</Text>
+          )}
+          <Text style={styles.info}>{message}</Text>
+        </ScrollView>
+      )}
       <TouchableOpacity style={styles.viewFooter} onPress={handleOut}>
         <Image
           source={require('../../../src/assets/ic_decline.png')}
@@ -173,10 +186,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#0055cc',
     margin: 5,
   },
-  main: {flex: 1, alignItems: 'center'},
+  main: {flex: 1, alignItems: 'center', backgroundColor: '#fff'},
   scroll: {flex: 1, backgroundColor: '#ddeeff', width: '100%'},
   scrollContainer: {alignItems: 'center'},
-  videoView: {width: '100%',flex:1, flexGrow:1, height:1000},
+  videoView: {width: '100%', flex: 1, flexGrow: 1, height: 1000},
   btnContainer: {flexDirection: 'row', justifyContent: 'center'},
   head: {fontSize: 20},
   info: {backgroundColor: '#ffffe0', color: '#0000ff'},
@@ -190,13 +203,12 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
   },
-  videoViewFromOther:{
-    height:200,
-    width:'35%',
-    top:20,
-    right:20,
-    position:'absolute'
-  }
-
+  videoViewFromOther: {
+    height: 200,
+    width: '35%',
+    top: 20,
+    right: 20,
+    position: 'absolute',
+  },
 });
 export default VideoCall;

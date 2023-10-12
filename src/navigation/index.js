@@ -1,7 +1,14 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {useEffect, useRef, useState} from 'react';
-import {Animated, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Animated,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+} from 'react-native';
 import {CurvedBottomBar} from 'react-native-curved-bottom-bar';
 import TabChat from './TabChat';
 import TabMovies from './TabMovies';
@@ -31,18 +38,39 @@ export default function NavigatorOne() {
   const tabBarRef = useRef();
   const navigationRef = useRef();
   const _renderIcon = (routeName, selectedTab) => {
+    console.log('selectedTab', selectedTab);
     let icon = '';
 
     switch (routeName) {
       case 'title1':
-        icon = 'Movies';
+        icon = require('../../assets/images/ic_movie.png');
         break;
       case 'title2':
-        icon = 'Weather';
+        icon = require('../../assets/images/ic_weather.png');
         break;
     }
 
-    return <Text>{icon}</Text>;
+    return (
+      <Image
+        source={icon}
+        style={{
+          height:
+            selectedTab === 'title1'
+              ? 60
+              : 40 || selectedTab === 'title2'
+              ? 60
+              : 40,
+          width:
+            selectedTab === 'title1'
+              ? 60
+              : 40 || selectedTab === 'title2'
+              ? 60
+              : 40,
+          tintColor: '#fff',
+        }}
+        resizeMode="contain"
+      />
+    );
   };
 
   const renderTabBar = ({routeName, selectedTab, navigate}) => {
