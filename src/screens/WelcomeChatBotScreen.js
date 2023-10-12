@@ -9,10 +9,15 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Button,
+  TextInput,
 } from 'react-native';
+import Modal from 'react-native-modal';
 import ChatFaceData from '../service/ChatFaceData';
 export default function WelcomeChatBotScreen() {
   const navigation = useNavigation();
+  const [name, setName] = useState('');
+  const [visible, setVisible] = useState(false);
   const [chatFaceData, setChatFaceData] = useState([]);
   const [selectedChatFace, setSelectedChatFace] = useState([]);
   const navgitaion = useNavigation();
@@ -33,8 +38,35 @@ export default function WelcomeChatBotScreen() {
     await AsyncStorage.setItem('chatFaceId', (id - 1).toString());
   };
 
+  const handleShowModal = () => {
+    setVisible(true);
+  };
+
+  const toggleModal = () => {
+    setVisible(!visible);
+    navigation.navigate('ChatBot', {
+      name: 'Long',
+    });
+  };
+  console.log('test');
   return (
     <ScrollView>
+      <Modal isVisible={visible}>
+        <View style={{flex: 1}}>
+          <Text>Hello!</Text>
+          <View
+            className="bg-white/3 p-2 rounded-3xl w-full "
+            style={{backgroundColor: '#fff'}}>
+            <TextInput
+              placeholder="Email"
+              placeholderTextColor={'gray'}
+              onChangeText={txt => setName(txt)}
+              value={name}
+            />
+          </View>
+          <Button title="Hide modal" onPress={toggleModal} />
+        </View>
+      </Modal>
       <View style={{alignItems: 'center', paddingTop: 20}}>
         <Text style={[{color: selectedChatFace?.primary}, {fontSize: 30}]}>
           Hello,
@@ -94,7 +126,7 @@ export default function WelcomeChatBotScreen() {
               alignItems: 'center',
             },
           ]}
-          onPress={() => navigation.navigate('ChatBot')}>
+          onPress={handleShowModal}>
           <Text style={{fontSize: 16, color: '#fff'}}>Let's Chat</Text>
         </TouchableOpacity>
       </View>
