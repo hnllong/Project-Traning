@@ -69,7 +69,7 @@ const Chat = () => {
       </View>
 
       <View style={styles.container}>
-        <View style={{flex: 6, backgroundColor: 'pink'}}>
+        <View style={{flex: 6, backgroundColor: 'pink', borderRadius: 10}}>
           <GiftedChat
             messages={messageList}
             onSend={messages => onSend(messages)}
