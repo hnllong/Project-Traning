@@ -1,4 +1,4 @@
-import React from 'react';
+import React , {useState} from 'react';
 import {Image, Text, TextInput, TouchableOpacity, View} from 'react-native';
 // import {StatusBar} from 'expo-status-bar';
 import {useNavigation} from '@react-navigation/native';
@@ -6,6 +6,25 @@ import Animated, {FadeInDown, FadeInUp} from 'react-native-reanimated';
 
 export default function SignupScreen() {
   const navigation = useNavigation();
+  const [email,setEmail]= useState('');
+  const [password,setPassword]= useState('');
+  const [username,setUsername]= useState('');
+
+  const handleSignUp = async()=>{
+    try{
+      const resLogin = await axios.post(`http://192.168.1.4:8080/auth/register`,{
+        email,
+        password,
+        username,
+      })
+      await AsyncStorage.setItem('token',resLogin?.data?.authentication?.sessionToken);
+     
+    }
+    catch(error){
+     console.log('err', error)
+    }
+  }
+
   return (
     <View className="bg-white h-full w-full">
       {/* <StatusBar style="light" /> */}
@@ -36,28 +55,30 @@ export default function SignupScreen() {
         <View className="flex items-center mx-5 space-y-4">
           <Animated.View
             entering={FadeInDown.duration(1000).springify()}
-            className="bg-black/5 p-5 rounded-2xl w-full">
-            <TextInput placeholder="Username" placeholderTextColor={'gray'} />
+            className="bg-black/5 p-3 rounded-2xl w-full">
+            <TextInput placeholder="Username" placeholderTextColor={'gray'} value={username} onChangeText={(txt)=>setUsername(txt)}/>
           </Animated.View>
           <Animated.View
             entering={FadeInDown.delay(200).duration(1000).springify()}
-            className="bg-black/5 p-5 rounded-2xl w-full">
-            <TextInput placeholder="Email" placeholderTextColor={'gray'} />
+            className="bg-black/5 p-3 rounded-2xl w-full">
+            <TextInput placeholder="Email" placeholderTextColor={'gray'} value={email} onChangeText={(txt)=>setEmail(txt)}/>
           </Animated.View>
           <Animated.View
             entering={FadeInDown.delay(400).duration(1000).springify()}
-            className="bg-black/5 p-5 rounded-2xl w-full mb-3">
+            className="bg-black/5 p-3 rounded-2xl w-full mb-3">
             <TextInput
               placeholder="Password"
               placeholderTextColor={'gray'}
               secureTextEntry
+              value={password}
+              onChangeText={(txt)=>setPassword(txt)}
             />
           </Animated.View>
 
           <Animated.View
             className="w-full"
             entering={FadeInDown.delay(600).duration(1000).springify()}>
-            <TouchableOpacity className="w-full bg-sky-400 p-3 rounded-2xl mb-3">
+            <TouchableOpacity className="w-full bg-sky-400 p-3 rounded-2xl mb-3" onPress={handleSignUp}>
               <Text className="text-xl font-bold text-white text-center">
                 SignUp
               </Text>

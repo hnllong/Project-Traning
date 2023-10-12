@@ -6,13 +6,32 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React ,{useState} from 'react';
 // import {StatusBar} from 'expo-status-bar';
 import {useNavigation} from '@react-navigation/native';
 import Animated, {FadeIn, FadeInDown, FadeInUp} from 'react-native-reanimated';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoginScreen() {
+  const [email,setEmail]= useState('')
+  const [pass,setPass]= useState('')
   const navigation = useNavigation();
+console.log({email,pass})
+const handleLogin = async()=>{
+  try{
+    const resLogin = await axios.post(`http://192.168.1.4:8080/auth/login`,{
+      email,
+      password:pass,
+    })
+    await AsyncStorage.setItem('token',resLogin?.data?.authentication?.sessionToken);
+   
+  }
+  catch(error){
+   console.log('err', error)
+  }
+}
+
   return (
     <View className="bg-white h-full w-full">
       {/* <StatusBar style="light" /> */}
@@ -44,7 +63,10 @@ export default function LoginScreen() {
           <Animated.View
             entering={FadeInDown.duration(1000).springify()}
             className="bg-black/5 p-5 rounded-2xl w-full ">
-            <TextInput placeholder="Email" placeholderTextColor={'gray'} />
+            <TextInput placeholder="Email" placeholderTextColor={'gray'} 
+                onChangeText={(txt)=> setEmail(txt)}
+                value={email}
+                />
           </Animated.View>
           <Animated.View
             entering={FadeInDown.delay(200).duration(1000).springify()}
@@ -53,13 +75,15 @@ export default function LoginScreen() {
               placeholder="Password"
               placeholderTextColor={'gray'}
               secureTextEntry
+              onChangeText={(txt)=> setPass(txt)}
+              value={pass}
             />
           </Animated.View>
 
           <Animated.View
             className="w-full"
             entering={FadeInDown.delay(400).duration(1000).springify()}>
-            <TouchableOpacity className="w-full bg-sky-400 p-3 rounded-2xl mb-3">
+            <TouchableOpacity className="w-full bg-sky-400 p-3 rounded-2xl mb-3" onPress={handleLogin}>
               <Text className="text-xl font-bold text-white text-center">
                 Login
               </Text>
