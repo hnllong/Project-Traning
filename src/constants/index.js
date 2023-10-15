@@ -51,7 +51,7 @@ export const dummyMessages = [
 ];
 
 export const apiKeyWeather =
-  'place your api key here from : https://www.weatherapi.com';
+  'e531b3480f1f48be901135751231210';
 
 export const weatherImages = {
   'Partly cloudy': require('../../assets/images/imag1.png'),

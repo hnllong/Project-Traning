@@ -48,27 +48,27 @@ export default function SignupScreen() {
       </View>
 
       {/* title and form */}
-      <View className="h-full w-full flex justify-around pt-48">
+      <View className="h-full w-full flex justify-around pt-48 mt-20">
         {/* title */}
 
         {/* form */}
         <View className="flex items-center mx-5 space-y-4">
           <Animated.View
             entering={FadeInDown.duration(1000).springify()}
-            className="bg-black/5 p-3 rounded-2xl w-full">
-            <TextInput placeholder="Username" placeholderTextColor={'gray'} value={username} onChangeText={(txt)=>setUsername(txt)}/>
+            className="bg-black/5 p-3 rounded-2xl w-full"  style={{borderWidth:1}}>
+            <TextInput placeholder="Username" placeholderTextColor={'black'} value={username} onChangeText={(txt)=>setUsername(txt)}/>
           </Animated.View>
           <Animated.View
             entering={FadeInDown.delay(200).duration(1000).springify()}
-            className="bg-black/5 p-3 rounded-2xl w-full">
-            <TextInput placeholder="Email" placeholderTextColor={'gray'} value={email} onChangeText={(txt)=>setEmail(txt)}/>
+            className="bg-black/5 p-3 rounded-2xl w-full"  style={{borderWidth:1}}>
+            <TextInput placeholder="Email" placeholderTextColor={'black'} value={email} onChangeText={(txt)=>setEmail(txt)}/>
           </Animated.View>
           <Animated.View
             entering={FadeInDown.delay(400).duration(1000).springify()}
-            className="bg-black/5 p-3 rounded-2xl w-full mb-3">
+            className="bg-black/5 p-3 rounded-2xl w-full mb-3"  style={{borderWidth:1}}>
             <TextInput
               placeholder="Password"
-              placeholderTextColor={'gray'}
+              placeholderTextColor={'black'}
               secureTextEntry
               value={password}
               onChangeText={(txt)=>setPassword(txt)}

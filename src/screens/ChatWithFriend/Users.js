@@ -14,8 +14,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 let id = '';
 const Users = () => {
-  const [users, setUsers] = useState([]);
   const navigation = useNavigation();
+  const [users, setUsers] = useState([]);
   const [mode, setMode] = useState('LIGHT');
   const isFocued = useIsFocused();
   useEffect(() => {
@@ -51,21 +51,20 @@ const Users = () => {
         styles.container,
         {backgroundColor: mode == 'LIGHT' ? 'white' : '#212121'},
       ]}>
-      <View style={styles.header}>
-        <Text style={styles.title}>RN Firebase Chat App</Text>
-      </View>
-      <Button title="Logout" onPress={() => navigation.navigate('Signup')} />
       <FlatList
         data={users}
         renderItem={({item, index}) => {
+          console.log("item", item)
           return (
             <TouchableOpacity
               style={[styles.userItem, {backgroundColor: 'white'}]}
               onPress={() => {
                 navigation.navigate('Chat', {data: item, id: id});
-              }}>
+              }}
+              key={item?.userId}
+              >
               <Image
-                source={require('../../assets/icons/user.png')}
+                source={{uri: item?.avatar}}
                 style={styles.userIcon}
               />
               <Text style={styles.name}>{item.name}</Text>
@@ -112,4 +111,5 @@ const styles = StyleSheet.create({
     height: 40,
   },
   name: {color: 'black', marginLeft: 20, fontSize: 20},
+ 
 });

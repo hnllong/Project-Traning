@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  Keyboard
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -18,16 +19,36 @@ import {weatherImages} from '../constants';
 import {getData, storeData} from '../utils/asyncStorage';
 
 export default function WeatherScreen() {
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [showSearch, toggleSearch] = useState(false);
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [weather, setWeather] = useState({});
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true); // or some other action
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false); // or some other action
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
 
   const handleSearch = search => {
-    // console.log('value: ',search);
+
     if (search && search.length > 2)
       fetchLocations({cityName: search}).then(data => {
-        // console.log('got locations: ',data);
+        
         setLocations(data);
       });
   };
@@ -52,7 +73,7 @@ export default function WeatherScreen() {
 
   const fetchMyWeatherData = async () => {
     let myCity = await getData('city');
-    let cityName = 'Islamabad';
+    let cityName = 'HaNoi';
     if (myCity) {
       cityName = myCity;
     }
@@ -71,9 +92,10 @@ export default function WeatherScreen() {
   const {location, current} = weather;
 
   return (
-    <View className="flex-1 relative">
+    <View className="flex-1 relative" style={{flexGrow:1}}>
+   
       {/* <StatusBar style="light" /> */}
-      <Image
+     <Image
         blurRadius={70}
         source={require('../../assets/images/bg.png')}
         className="absolute w-full h-full"
@@ -87,7 +109,7 @@ export default function WeatherScreen() {
           {/* search section */}
           <View style={{height: '7%'}} className="mx-4 relative z-50">
             <View
-              className="flex-row justify-end items-center rounded-full"
+              className="flex-row justify-end items-center rounded-full mt-3"
               style={{
                 backgroundColor: showSearch
                   ? theme.bgWhite(0.2)
@@ -113,7 +135,7 @@ export default function WeatherScreen() {
               </TouchableOpacity>
             </View>
             {locations.length > 0 && showSearch ? (
-              <View className="absolute w-full bg-gray-300 top-16 rounded-3xl ">
+              <View className="absolute w-full bg-gray-300 top-16 rounded-3xl mt-5">
                 {locations.map((loc, index) => {
                   let showBorder = index + 1 != locations.length;
                   let borderClass = showBorder
@@ -127,7 +149,7 @@ export default function WeatherScreen() {
                         'flex-row items-center border-0 p-3 px-4 mb-1 ' +
                         borderClass
                       }>
-                      <MapPinIcon size="20" color="gray" />
+                      <MapPinIcon size="20" color="green" />
                       <Text className="text-black text-lg ml-2">
                         {loc?.name}, {loc?.country}
                       </Text>
@@ -139,24 +161,32 @@ export default function WeatherScreen() {
           </View>
 
           {/* forecast section */}
-          <View className="mx-4 flex justify-around flex-1 mb-2">
+          <View className="mx-4 flex justify-around flex-1 ">
             {/* location */}
-            <Text className="text-white text-center text-2xl font-bold">
+            {isKeyboardVisible ? 
+            (
+              <View />
+            ) :(
+              <Text className="text-white text-center text-2xl font-bold">
               {location?.name},
               <Text className="text-lg font-semibold text-gray-300">
                 {location?.country}
               </Text>
             </Text>
+            )
+       }
             {/* weather icon */}
+             {!isKeyboardVisible &&
             <View className="flex-row justify-center">
               <Image
                 // source={{uri: 'https:'+current?.condition?.icon}}
                 source={weatherImages?.[current?.condition?.text || 'other']}
                 className="w-52 h-52"
               />
-            </View>
+            </View>}
             {/* degree celcius */}
-            <View className="space-y-2">
+            {!isKeyboardVisible &&
+            <View>
               <Text className="text-center font-bold text-white text-6xl ml-5">
                 {current?.temp_c}&#176;
               </Text>
@@ -164,10 +194,12 @@ export default function WeatherScreen() {
                 {current?.condition?.text}
               </Text>
             </View>
+}
 
             {/* other stats */}
+            {!isKeyboardVisible &&
             <View className="flex-row justify-between mx-4">
-              <View className="flex-row space-x-2 items-center">
+              <View className="flex-row  items-center">
                 {/* <Image
                   source={require('../../assets/icons/wind.png')}
                   className="w-6 h-6"
@@ -176,7 +208,7 @@ export default function WeatherScreen() {
                   {current?.wind_kph}km
                 </Text>
               </View>
-              <View className="flex-row space-x-2 items-center">
+              <View className="flex-row  items-center">
                 {/* <Image
                   source={require('../../assets/icons/drop.png')}
                   className="w-6 h-6"
@@ -191,21 +223,23 @@ export default function WeatherScreen() {
                   className="w-6 h-6"
                 /> */}
                 <Text className="text-white font-semibold text-base">
-                  {weather?.forecast?.forecastday[0]?.astro?.sunrise}
+                  { new Date().toLocaleString()}
                 </Text>
               </View>
             </View>
+}
           </View>
 
           {/* forecast for next days */}
-          <View className="mb-2 space-y-3">
+          {!isKeyboardVisible &&
+          <View className="mb-5 space-y-3">
             <View className="flex-row items-center mx-5 space-x-2">
               <CalendarDaysIcon size="22" color="white" />
               <Text className="text-white text-base">Daily forecast</Text>
             </View>
             <ScrollView
               horizontal
-              contentContainerStyle={{paddingHorizontal: 15}}
+              contentContainerStyle={{paddingHorizontal: 15, paddingBottom:60}}
               showsHorizontalScrollIndicator={false}>
               {weather?.forecast?.forecastday?.map((item, index) => {
                 const date = new Date(item.date);
@@ -234,8 +268,11 @@ export default function WeatherScreen() {
               })}
             </ScrollView>
           </View>
+}
         </SafeAreaView>
       )}
+    
     </View>
+    
   );
 }

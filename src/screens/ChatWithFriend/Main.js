@@ -46,16 +46,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+    
   },
   bottomTab: {
     position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    height: 70,
+    bottom: 60,
+    width: '80%',
+    height: 80,
     backgroundColor: 'purple',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
+    alignSelf:'center',
+    borderTopLeftRadius:40,
+    borderTopRightRadius:40
   },
   tab: {
     width: '50%',

@@ -1,8 +1,8 @@
 import firestore from '@react-native-firebase/firestore';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useCallback, useEffect, useState} from 'react';
-import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {GiftedChat} from 'react-native-gifted-chat';
+import {Image, StyleSheet, TouchableOpacity, View,Text} from 'react-native';
+import {GiftedChat,InputToolbar} from 'react-native-gifted-chat';
 
 const Chat = () => {
   const navigation = useNavigation();
@@ -25,14 +25,15 @@ const Chat = () => {
       return subscriber;
     };
   }, []);
-
   const onSend = useCallback(async (messages = []) => {
     const msg = messages[0];
+    console.log('msg', msg)
     const myMsg = {
       ...msg,
       sendBy: route.params.id,
       sendTo: route.params.data.userId,
       createdAt: Date.parse(msg.createdAt),
+      avatar:  route.params.data.avatar
     };
     setMessageList(previousMessages =>
       GiftedChat.append(previousMessages, myMsg),
@@ -53,13 +54,35 @@ const Chat = () => {
     navigation.navigate('VideoCall');
   };
 
+  const renderInputToolbar = props => {
+    //Add the extra styles via containerStyle
+    return (
+      <InputToolbar
+        {...props}
+        containerStyle={{
+          // backgroundColor: chatFaceColor,
+          borderRadius: 10,
+          borderWidth: 1,
+          borderColor: "black",
+          // marginTop: 60,
+          color: 'black',
+        }}
+        textInputStyle={{color: 'black'}}
+      />
+    );
+  };
+console.log('route?.params?.data?.avatar',route?.params?.data?.avatar)
+
   return (
     <>
       <View style={styles.viewHeader}>
+        <TouchableOpacity style={{ flexDirection: 'row',  alignItems: 'center'}} onPress={()=> navigation.goBack()}>
         <Image
           source={require('../../../src/assets/ic_back.png')}
           style={styles.styleImage}
         />
+        <Text style={{marginLeft :8, fontSize:20, fontWeight:"bold"}}>{route?.params?.data?.name}</Text>
+        </TouchableOpacity>
         <TouchableOpacity onPress={handleCall}>
           <Image
             source={require('../../../src/assets/ic_call.png')}
@@ -68,18 +91,22 @@ const Chat = () => {
         </TouchableOpacity>
       </View>
 
+      
+
       <View style={styles.container}>
-        <View style={{flex: 6, backgroundColor: 'pink', borderRadius: 10}}>
+        <View style={{flex: 6, borderRadius: 10}}>
           <GiftedChat
             messages={messageList}
             onSend={messages => onSend(messages)}
             user={{
               _id: route?.params?.id,
+              avatar: route?.params?.data?.avatar
             }}
-            showUserAvatar
+            renderInputToolbar={renderInputToolbar}
+            // renderSend={renderSend}
           />
         </View>
-        <View style={{flex: 1}}></View>
+        <View style={{flex:1.15}}></View>
       </View>
     </>
   );

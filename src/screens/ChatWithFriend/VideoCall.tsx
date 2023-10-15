@@ -85,7 +85,7 @@ const VideoCall = () => {
   };
 
   const join = async () => {
-    console.log('vao');
+  
     if (isJoined) {
       return;
     }
@@ -103,7 +103,7 @@ const VideoCall = () => {
   };
 
   const leave = () => {
-    console.log('leave');
+ 
     try {
       agoraEngineRef.current?.leaveChannel();
       setRemoteUid(0);
@@ -166,13 +166,15 @@ const VideoCall = () => {
           <Text style={styles.info}>{message}</Text>
         </ScrollView>
       )}
-      <TouchableOpacity style={styles.viewFooter} onPress={handleOut}>
-        <Image
-          source={require('../../../src/assets/ic_decline.png')}
-          style={styles.styleImage}
-          resizeMode="contain"
-        />
-      </TouchableOpacity>
+      {!loading ? (
+        <TouchableOpacity style={styles.viewFooter} onPress={handleOut}>
+          <Image
+            source={require('../../../src/assets/ic_decline.png')}
+            style={styles.styleImage}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+      ) : null}
     </SafeAreaView>
   );
 };
