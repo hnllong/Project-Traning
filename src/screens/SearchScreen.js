@@ -45,9 +45,9 @@ export default function SearchScreen() {
   const handleTextDebounce = useCallback(debounce(handleSearch, 400), []);
 
   return (
-    <SafeAreaView className="bg-neutral-800 flex-1">
+    <SafeAreaView className="bg-neutral-800 flex-1 ">
       {/* search input */}
-      <View className="mx-4 mb-3 flex-row justify-between items-center border border-neutral-500 rounded-full">
+      <View className="mx-4 mb-3 mt-10 flex-row justify-between items-center border border-neutral-500 rounded-full">
         <TextInput
           onChangeText={handleTextDebounce}
           placeholder="Search Movie"

@@ -1,5 +1,6 @@
 import {
     View,
+    ScrollView,
     Text,
     StyleSheet,
     TextInput,
@@ -51,7 +52,7 @@ import Loading from '../../components/loading';
       navigation.navigate('Main');
     };
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container} contentContainerStyle={{paddingBottom:200}}>
         <Text style={styles.title}>Login</Text>
   
         <TextInput
@@ -84,7 +85,7 @@ import Loading from '../../components/loading';
         </Text>
         {/* <Loader visible={visible} /> */}
         {visible? <Loading /> : null }
-      </View>
+      </ScrollView>
     );
   };
   
@@ -104,7 +105,7 @@ import Loading from '../../components/loading';
     input: {
       width: '90%',
       height: 50,
-      borderWidth: 0.5,
+      borderWidth: 1,
       borderRadius: 10,
   
       alignSelf: 'center',

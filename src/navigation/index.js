@@ -24,7 +24,6 @@ const Screen2 = () => {
 
 export default function NavigatorOne() {
   const [routeName, setRouteName] = useState();
-  console.log('routeName', routeName);
   // return (
   //   // <AppNavigation />
   // )
@@ -38,24 +37,24 @@ export default function NavigatorOne() {
   const tabBarRef = useRef();
   const navigationRef = useRef();
   const _renderIcon = (routeName, selectedTab) => {
-    console.log('selectedTab', selectedTab);
     let icon = '';
     let customStyle = {};
     switch (routeName) {
       case 'title1':
         icon = require('../../assets/images/ic_movie.png');
         customStyle = {
-          height: selectedTab === 'title1' ? 50 : 40,
-          width: selectedTab === 'title1' ? 50 : 40,
+          height: selectedTab === 'title1' ? 65 : 40,
+          width: selectedTab === 'title1' ? 65 : 40,
           tintColor: '#ffffffff',
         };
         break;
       case 'title2':
         icon = require('../../assets/images/ic_weather.png');
         customStyle = {
-          height: selectedTab === 'title2' ? 60 : 40,
-          width: selectedTab === 'title2' ? 60 : 40,
+          height: selectedTab === 'title2' ? 75 : 50,
+          width: selectedTab === 'title2' ? 75 : 50,
           tintColor: '#ffffffff',
+          marginTop:5
         };
         break;
     }
@@ -78,7 +77,6 @@ export default function NavigatorOne() {
       ref={navigationRef}
       onReady={() => {
         const currentRoute = navigationRef.current.getCurrentRoute();
-        console.log('currentRoute', currentRoute);
         setRouteName(currentRoute.name);
         // Do whatever you want with navigation here!.
       }}>
@@ -98,15 +96,7 @@ export default function NavigatorOne() {
             <TouchableOpacity
               style={styles.button}
               onPress={() => navigate('Movie-App')}>
-              {/* <Ionicons name={'apps-sharp'} color="gray" size={25} /> */}
-              <Text
-                style={{
-                  color: '#F08437',
-                  fontSize: selectedTab === 'Movie-App' ? 20 : 15,
-                  fontWeight: selectedTab === 'Movie-App' ? 'bold' : 500,
-                }}>
-                Bot
-              </Text>
+              <Image source={require('../../assets/images/ic_android.png')} style={{width : selectedTab === 'Movie-App'? 70 :50, height :selectedTab === 'Movie-App'? 70 :50, marginRight:2}} resizeMode="contain" />
             </TouchableOpacity>
           </Animated.View>
         )}
@@ -147,6 +137,7 @@ export const styles = StyleSheet.create({
   button: {
     flex: 1,
     justifyContent: 'center',
+    alignItems:'center'
   },
   bottomBar: {},
   btnCircleUp: {
@@ -188,4 +179,5 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFEBCD',
   },
+  
 });

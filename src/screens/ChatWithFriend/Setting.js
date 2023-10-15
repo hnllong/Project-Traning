@@ -1,9 +1,11 @@
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useIsFocused} from '@react-navigation/native';
+import {useIsFocused,useNavigation} from '@react-navigation/native';
+
 const Setting = () => {
   const [mode, setMode] = useState('LIGHT');
+  const navigation = useNavigation();
   const isFocued = useIsFocused();
   const changeMode = async x => {
     await AsyncStorage.setItem('MODE', x);
@@ -21,7 +23,12 @@ const Setting = () => {
         {backgroundColor: mode == 'LIGHT' ? 'white' : '#212121'},
       ]}>
       <View style={styles.themChangeView}>
-        <Text style={{color: mode == 'LIGHT' ? 'black' : 'white'}}>
+        <Text
+          style={{
+            color: mode == 'LIGHT' ? 'black' : 'white',
+            fontSize: 20,
+            fontWeight: 'bold',
+          }}>
           Change Mode
         </Text>
         <TouchableOpacity
@@ -37,7 +44,13 @@ const Setting = () => {
             Dark Mode
           </Text>
         </TouchableOpacity>
+       
       </View>
+      <TouchableOpacity
+          style={styles.btn2}
+          onPress={() => navigation.navigate('Login')}>
+          <Text style={styles.btnText}>Logout</Text>
+        </TouchableOpacity>
     </View>
   );
 };
@@ -64,5 +77,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
+    borderWidth: 6,
+    borderColor: 'blue',
+  },
+  btn2: {
+    width: '90%',
+    height: 50,
+    borderRadius: 10,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+    backgroundColor: 'blue',
+    
+  },
+  btnText: {
+    color: 'white',
+    fontSize: 20,
   },
 });

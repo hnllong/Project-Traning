@@ -91,3 +91,5 @@ export const searchMovies = params => {
 
 export const apiGetMovieSport = () =>
   axios.get(`http://192.168.1.4:8080/all-sport/movies`);
+
+export const apiGetDetailSport = id => axios.post(`http://192.168.1.4:8080/sports/${id}`);

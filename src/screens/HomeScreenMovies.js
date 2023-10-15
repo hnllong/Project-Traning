@@ -1,16 +1,13 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {Platform, ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { Platform, ScrollView, Text, TouchableOpacity, View,Image } from 'react-native';
 import {
   Bars3CenterLeftIcon,
   MagnifyingGlassIcon,
 } from 'react-native-heroicons/outline';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import MovieList from '../components/movieList';
 import TrendingMovies from '../components/trendingMovies';
-// import {StatusBar} from 'expo-status-bar';
-import YoutubePlayer from 'react-native-youtube-iframe';
-
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import {
   apiGetMovieSport,
   fetchTopRatedMovies,
@@ -18,17 +15,20 @@ import {
   fetchUpcomingMovies,
 } from '../api/moviedb';
 import Loading from '../components/loading';
-import {MyContext} from '../context/MyContext';
-import {styles} from '../theme';
+import { MyContext } from '../context/MyContext';
+import { styles } from '../theme';
+import { itemMovieDefault } from './MovieScreen';
 
 const ios = Platform.OS === 'ios';
 
 export default function HomeScreenMovies() {
   const {setToken} = useContext(MyContext);
+  const [seeAllTopRate, setSeeAllTopRate]= useState(false);
+  const [seeAllUpcoming, setSeeAllUpcoming]= useState(false);
   const [trending, setTrending] = useState([]);
   const [upcoming, setUpcoming] = useState([]);
   const [topRated, setTopRated] = useState([]);
-  const [movieSport, setMovieSport] = useState([]);
+  const [movieSport, setMovieSport] = useState([...itemMovieDefault]);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
 
@@ -38,6 +38,28 @@ export default function HomeScreenMovies() {
     getTopRatedMovies();
     getListSportMovie();
   }, []);
+
+  const handleSeeTopRate = async()=>{
+    if(seeAllTopRate){
+      const data = await fetchTopRatedMovies();
+      if (data && data.results) setTopRated(data.results.slice(0, 4));
+    }else{
+      const data = await fetchTopRatedMovies();
+      if (data && data.results) setTopRated(data.results);
+    }
+    setSeeAllTopRate(!seeAllTopRate)
+  }
+
+  const handleSeeUpComing = async()=>{
+    if(seeAllUpcoming){
+      const data = await fetchUpcomingMovies();
+      if (data && data.results) setUpcoming(data.results.slice(0, 4));
+    }else{
+      const data = await fetchUpcomingMovies();
+      if (data && data.results) setUpcoming(data.results);
+    }
+    setSeeAllUpcoming(!seeAllUpcoming)
+  }
 
   const getTrendingMovies = async () => {
     const data = await fetchTrendingMovies();
@@ -55,7 +77,7 @@ export default function HomeScreenMovies() {
 
   const getListSportMovie = async () => {
     const data = await apiGetMovieSport();
-    if (data && data.results) setMovieSport(data.results);
+    if (data && data?.data) setMovieSport([...itemMovieDefault,...data?.data]);
   };
 
   const handleLogOut = () => {
@@ -69,7 +91,8 @@ export default function HomeScreenMovies() {
         {/* <StatusBar style="light" /> */}
         <View className="flex-row justify-between items-center mx-4">
           <TouchableOpacity onPress={handleLogOut}>
-            <Bars3CenterLeftIcon size="30" strokeWidth={2} color="white" />
+            <Image source={require('../ic_logout.png')} style={{width:25, height:25 ,  tintColor :"#fff"}}/>
+            {/* <Bars3CenterLeftIcon size="30" strokeWidth={2} color="white" /> */}
           </TouchableOpacity>
           <Text className="text-white text-3xl font-bold">
             <Text style={styles.text}>M</Text>ovies
@@ -84,23 +107,21 @@ export default function HomeScreenMovies() {
       ) : (
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingBottom: 10}}>
+          contentContainerStyle={{paddingBottom: 80}}>
           {/* Trending Movies Carousel */}
           {trending.length > 0 && <TrendingMovies data={trending} />}
 
           {/* upcoming movies row */}
           {upcoming.length > 0 && (
-            <MovieList title="Upcoming" data={upcoming} />
+            <MovieList title="Upcoming" data={upcoming}  hideSeeAll={seeAllUpcoming} handleSeeTopRate={handleSeeUpComing}/>
           )}
-          <YoutubePlayer
-            height={300}
-            play={true}
-            videoId={'iee2TATGMyI'}
-            // onChangeState={onStateChange}
-          />
           {/* top rated movies row */}
-          {topRated.length > 0 && (
-            <MovieList title="Top Rated" data={topRated} />
+          {topRated?.length > 0 && (
+            <MovieList title="Top Rated" data={topRated}  hideSeeAll={seeAllTopRate} handleSeeTopRate={handleSeeTopRate}/>
+          )}
+            {/* movies sport  row */}
+          {movieSport?.length > 0 && (
+            <MovieList title="Hot 2023" data={movieSport} />
           )}
         </ScrollView>
       )}

@@ -1,5 +1,5 @@
 import {
-  View,
+  ScrollView,
   Text,
   StyleSheet,
   TextInput,
@@ -15,6 +15,7 @@ const Signup = () => {
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
   const [password, setPassword] = useState('');
+  const [avatar, setAvatar] = useState('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGoXtzg12kbkhmTUnm1AsqRMAGYhUQARe7mQ&usqp=CAU');
   const [confirmPassword, setConfirmPassword] = useState('');
   const navigation = useNavigation();
 
@@ -29,6 +30,7 @@ const Signup = () => {
         password: password,
         mobile: mobile,
         userId: userId,
+        avatar:avatar
       })
       .then(res => {
         console.log('user created ');
@@ -61,7 +63,7 @@ const Signup = () => {
     return isValid;
   };
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={{paddingBottom:200}}>
       <Text style={styles.title}>Sign Up</Text>
       <TextInput
         placeholder="Enter Name"
@@ -74,6 +76,12 @@ const Signup = () => {
         style={[styles.input, {marginTop: 20}]}
         value={email}
         onChangeText={txt => setEmail(txt)}
+      />
+       <TextInput
+        placeholder="Enter Avatar"
+        style={[styles.input, {marginTop: 20}]}
+        value={avatar}
+        onChangeText={txt => setAvatar(txt)}
       />
       <TextInput
         placeholder="Enter Mobile"
@@ -108,11 +116,11 @@ const Signup = () => {
       <Text
         style={styles.orLogin}
         onPress={() => {
-          navigation.goBack();
+          navigation.navigate('Login');
         }}>
         Or Login
       </Text>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -132,7 +140,7 @@ const styles = StyleSheet.create({
   input: {
     width: '90%',
     height: 50,
-    borderWidth: 0.5,
+    borderWidth: 1,
     borderRadius: 10,
 
     alignSelf: 'center',

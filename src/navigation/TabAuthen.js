@@ -7,6 +7,7 @@ import {
   default as ChatBotScreen,
   default as ChatScreen,
 } from '../screens/ChatBot';
+import ForgotPass from '../screens/AuthenApp/ForgotPass';
 
 ChatScreen;
 const Stack = createNativeStackNavigator();
@@ -18,12 +19,14 @@ function TabAuthen() {
         screenOptions={{headerShown: false}}
         initialRouteName="LoginApp">
         <Stack.Screen name="LoginApp" component={LoginScreen} />
-        {/* <Stack.Screen name="ChatWithBot" component={ChatWithBot} />
-      <Stack.Screen name="ChatWithfriend" component={ChatWithFriend} /> */}
-        {/* <Stack.Screen name="SignApp" component={Sig} /> */}
         <Stack.Screen
           name="SignUpApp"
           component={SignupScreen}
+          screenOptions={{headerShown: false}}
+        />
+         <Stack.Screen
+          name="ForgotApp"
+          component={ForgotPass}
           screenOptions={{headerShown: false}}
         />
       </Stack.Navigator>

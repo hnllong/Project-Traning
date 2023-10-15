@@ -48,7 +48,7 @@ export default function ChatBotScreen() {
 
   const getBardResp = async msg => {
     setLoading(true);
-    await axios.get(`http://192.168.1.4:3000/api/bardapi?ques=${msg}`)?.then(
+    await axios.get(`http://192.168.1.4:8080/bot?ques=${msg}`)?.then(
       resp => {
         if (resp.data.resp[1].content) {
           setLoading(false);
@@ -131,19 +131,10 @@ export default function ChatBotScreen() {
     );
   };
 
-  const renderSend = props => {
-    return (
-      <Send {...props}>
-        <View style={{}}>
-          {/* <FontAwesome name="send" size={24} color="white" resizeMode={'center'} /> */}
-          <Text>Send</Text>
-        </View>
-      </Send>
-    );
-  };
+ 
 
   return (
-    <View style={{flex: 1, backgroundColor: 'green', paddingBottom: 80}}>
+    <View style={{flex: 1, paddingBottom: 100}}>
       <View className=" flex-1">
         <View style={{alignItem: 'center'}}>
           <Image
@@ -166,7 +157,7 @@ export default function ChatBotScreen() {
           </Text>
         </View>
         <View
-          style={{flexGrow: 1, marginLeft: 10, marginRight: 10}}
+          style={{flexGrow: 1, marginLeft: 10, marginRight: 10, borderWidth: 1, borderColor:chatFaceColor }}
           className="bg-neutral-200 rounded-3xl p-4">
           <GiftedChat
             messages={messages}
@@ -178,7 +169,7 @@ export default function ChatBotScreen() {
             }}
             renderBubble={renderBubble}
             renderInputToolbar={renderInputToolbar}
-            renderSend={renderSend}
+      
           />
         </View>
       </View>

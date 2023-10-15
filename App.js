@@ -7,8 +7,6 @@ import TabAuthen from './src/navigation/TabAuthen';
 export default function App() {
   const [token, setToken] = useState();
 
-  console.log('Valuee token', token);
-
   return (
     <View style={{flex: 1}}>
       <MyContext.Provider value={{token, setToken}}>
